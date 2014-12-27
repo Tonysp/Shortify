@@ -134,9 +134,7 @@ public class ShortifyUtility
     public static CommonConfiguration loadCfg(File pl)
     {
         CommonConfiguration c = new CommonConfiguration();
-        c.addDefault("mode", "replace");
         c.addDefault("shortener", "isgd");
-        c.addDefault("prefix", "&n");
         c.addDefault("minlength", "20");
         c.addDefault("googAPI", "none");
         c.addDefault("bitlyUSER", "none");

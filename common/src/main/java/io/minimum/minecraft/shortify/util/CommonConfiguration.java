@@ -155,6 +155,7 @@ public class CommonConfiguration
             DumperOptions options = new DumperOptions();
             options.setIndent(4);
             options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            s.write("# Shortify configuration: http://minecraft.minimum.io/wiki/Shortify\n");
             try
             {
                 new Yaml(options).dump(mergeDefaultsAndConfig(), s);
