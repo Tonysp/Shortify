@@ -32,15 +32,12 @@ public class ShortifyListener implements Listener {
         if (event.getPlayer().hasPermission("shortify.shorten")) {
             final Shortener shortener = Shortify.getShortenerManager().getShortener(Shortify.getConfiguration().getString("shortener", "isgd"));
             try {
-                if (Shortify.getConfiguration().getString("mode", "replace")
-                        .equals("replace")) {
-                    event.setMessage(ShortifyUtility.shortenAll(
-                            event.getMessage(),
-                            Integer.valueOf(Shortify.getConfiguration().getString(
-                                    "minlength", "20")),
-                            shortener,
-                            Shortify.getConfiguration().getString("prefix")));
-                }
+                event.setMessage(ShortifyUtility.shortenAll(
+                        event.getMessage(),
+                        Integer.valueOf(Shortify.getConfiguration().getString(
+                                "minlength", "20")),
+                        shortener)
+                );
             } catch (NumberFormatException e1) {
                 plugin.getServer().getConsoleSender()
                         .sendMessage(
@@ -50,42 +47,6 @@ public class ShortifyListener implements Listener {
                 plugin.getServer().getConsoleSender().sendMessage(
                         ChatColor.RED + "Warning: " + e1.getMessage());
             }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onAsyncPlayerChatMonitor(final AsyncPlayerChatEvent event) {
-        if (Shortify.getConfiguration().getString("mode", "replace")
-                .equals("classic") && event.getPlayer().hasPermission("shortify.shorten")) {
-            final Shortener shortener = Shortify.getShortenerManager().getShortener(Shortify.getConfiguration().getString("shortener", "isgd"));
-            final Set<Player> recipients = ImmutableSet.copyOf(event.getRecipients());
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        final String newm = ShortifyUtility.classicUrlShorten(
-                                event.getMessage(), Integer.valueOf(Shortify.getConfiguration().getString("minlength", "20")),
-                                shortener);
-                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-
-                            @Override
-                            public void run() {
-                                for (Player player : recipients)
-                                    player.sendMessage(newm);
-                            }
-
-                        });
-                    } catch (NumberFormatException e) {
-                        plugin.getServer().getConsoleSender()
-                                .sendMessage(
-                                        ChatColor.RED
-                                                + "Warning: Your config.yml is invalid: minlength is not a number or invalid.");
-                    } catch (ShortifyException e) {
-                        plugin.getServer().getConsoleSender().sendMessage(
-                                ChatColor.RED + "Warning: " + e.getMessage());
-                    }
-                }
-            });
         }
     }
 }

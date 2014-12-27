@@ -23,9 +23,6 @@ public final class Shortify extends JavaPlugin {
     public void onEnable() {
         // Load config.yml with snakeyaml
         configuration = ShortifyUtility.loadCfg(getFile());
-        if (configuration.getBoolean("update")) {
-            new Updater(this, 46984, this.getFile(), Updater.UpdateType.DEFAULT, false);
-        }
         shortenerManager = ShortifyUtility.setupShorteners();
         ShortifyUtility.reloadConfigShorteners(shortenerManager, configuration);
         ShortifyUtility.verifyConfiguration(configuration, getLogger());

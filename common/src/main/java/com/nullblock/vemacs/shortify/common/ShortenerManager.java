@@ -1,5 +1,8 @@
 package com.nullblock.vemacs.shortify.common;
 
+import com.google.common.collect.ImmutableSet;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,8 +33,7 @@ public class ShortenerManager {
         return shorteners.get(name);
     }
 
-    public String[] list() {
-        Set<String> set = shorteners.keySet();
-        return set.toArray(new String[set.size()]);
+    public Collection<String> list() {
+        return ImmutableSet.copyOf(shorteners.keySet());
     }
 }

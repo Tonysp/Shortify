@@ -42,6 +42,7 @@ public class Shortify extends Plugin {
             }
         }
         listener = new ShortifyListener(this);
+        getProxy().getPluginManager().registerListener(this, listener);
         getProxy().getPluginManager().registerCommand(this, new ShortifyCommand());
         ShortifyUtility.dumpData(getFile(), configuration);
     }

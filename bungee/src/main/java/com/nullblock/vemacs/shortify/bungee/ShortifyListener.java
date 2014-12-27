@@ -33,8 +33,8 @@ public class ShortifyListener implements Listener {
                         event.getMessage(),
                         Integer.valueOf(Shortify.getConfiguration().getString(
                                 "minlength", "20")),
-                        shortener,
-                        Shortify.getConfiguration().getString("prefix")));
+                        shortener)
+                );
             } catch (NumberFormatException e1) {
                 plugin.getLogger().warning("Your config.yml is invalid: minlength is not a number or invalid.");
             } catch (ShortifyException e1) {

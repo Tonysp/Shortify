@@ -14,7 +14,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 
 import static org.junit.Assert.fail;
 
@@ -73,12 +73,10 @@ public class UrlShortenerTest {
 	}
 
 	@Test
-	public void noConfigurationTest() throws InstantiationException,
-			IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException {
+	public void noConfigurationTest() {
 		// For each URL shortener supported without special configuration,
 		// attempt to shorten the BukkitDev page.
-		String[] shorteners = sm.list();
+		Collection<String> shorteners = sm.list();
         for (String shortener : shorteners) {
             // Attempt to shorten
             doShortenerTest(shortener);

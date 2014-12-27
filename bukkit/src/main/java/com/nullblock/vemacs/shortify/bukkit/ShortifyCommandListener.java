@@ -24,7 +24,7 @@ public class ShortifyCommandListener implements Listener {
                 e.setMessage(ShortifyUtility.shortenAll(
                         e.getMessage(),
                         Integer.valueOf(Shortify.getConfiguration().getString("minlength", "20")),
-                        Shortify.getShortenerManager().getShortener(Shortify.getConfiguration().getString("shortener", "isgd")), ""));
+                        Shortify.getShortenerManager().getShortener(Shortify.getConfiguration().getString("shortener", "isgd"))));
 
             } catch (NumberFormatException e1) {
                 plugin.getServer().getConsoleSender()

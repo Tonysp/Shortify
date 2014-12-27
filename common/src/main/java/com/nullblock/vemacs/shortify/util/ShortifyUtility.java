@@ -1,6 +1,5 @@
 package com.nullblock.vemacs.shortify.util;
 
-import com.google.common.base.Joiner;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.nullblock.vemacs.shortify.common.*;
@@ -10,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +28,6 @@ public class ShortifyUtility {
         sm.registerShortener("niggr", new ShortenerNigGr());
         sm.registerShortener("safemn", new ShortenerSafeMn());
         sm.registerShortener("tinyurl", new ShortenerTinyUrl());
-        sm.registerShortener("tx0", new ShortenerTx0());
         sm.registerShortener("yu8me", new ShortenerYu8Me());
         return sm;
     }
@@ -63,10 +59,8 @@ public class ShortifyUtility {
      *
      * @throws ShortifyException
      */
-    public static String shortenAll(String txt, int minln,
-                                    Shortener shortener, String prefix) throws ShortifyException {
+    public static String shortenAll(String txt, int minln, Shortener shortener) throws ShortifyException {
         // From Daring Fireball
-        prefix = replaceColors(prefix);
         Matcher m = URL_PATTERN.matcher(txt);
 
         // TODO Replace this with StringBuilder
@@ -76,25 +70,16 @@ public class ShortifyUtility {
             String modified = urlTmp;
             if (urlTmp.length() >= minln) {
                 try {
-                    String url = shortener.getShortenedUrl(java.net.URLEncoder
+                    modified = shortener.getShortenedUrl(java.net.URLEncoder
                             .encode(urlTmp, "UTF-8"));
 
-                    if (url == null)
+                    if (modified == null)
                         throw new ShortifyException("Shortener returned null for " + urlTmp);
 
-                    if (!prefix.isEmpty()) {
-                        modified = prefix + url + replaceColors("&r");
-                    } else {
-                        modified = url;
-                    }
                     // might as well put the encoder in the listener to
                     // prevent possible injections
                 } catch (UnsupportedEncodingException e1) {
                     // do absolutely nothing
-                }
-            } else {
-                if (!prefix.isEmpty()) {
-                    modified = prefix + urlTmp + replaceColors("&r");
                 }
             }
             m.appendReplacement(sb, "");
@@ -104,58 +89,7 @@ public class ShortifyUtility {
         return sb.toString();
     }
 
-    public static String classicUrlShorten(String message, int minln,
-                                           Shortener shortener) throws ShortifyException {
-        Matcher m = URL_PATTERN.matcher(message);
-        String urlTmp;
-        List<String> urls = new ArrayList<>();
-        while (m.find()) {
-            urlTmp = m.group(1);
-            if (urlTmp.length() > minln) {
-                try {
-                    urls.add(shortener.getShortenedUrl(java.net.URLEncoder
-                            .encode(urlTmp, "UTF-8")));
-                    // might as well put the encoder in the listener to
-                    // prevent possible injections
-                } catch (UnsupportedEncodingException e1) {
-                    // do absolutely nothing
-                }
-            }
-        }
-        return "The following URLs were shortened: " + Joiner.on(", ").join(urls);
-    }
-
-    public static String replaceColors(String text) {
-        // copied from
-        // http://forums.bukkit.org/threads/simple-colors-parsing-method.32058/#post-1251988
-        char[] chrarray = text.toCharArray();
-
-        for (int index = 0; index < chrarray.length; index++) {
-            char chr = chrarray[index];
-            if (chr != '&') {
-                continue;
-            }
-
-            if ((index + 1) == chrarray.length) {
-                break;
-            }
-            char forward = chrarray[index + 1];
-            if ((forward >= '0' && forward <= '9')
-                    || (forward >= 'a' && forward <= 'f')
-                    || (forward >= 'k' && forward <= 'r')) {
-                chrarray[index] = '\u00A7';
-            }
-        }
-        return new String(chrarray);
-    }
-
     public static void verifyConfiguration(CommonConfiguration c, Logger l) {
-        if (!(c.getString("mode").equals("replace") || c.getString("mode")
-                .equals("classic"))) {
-            l.info("Mode not configured correctly!");
-            l.info("Reverting to replace mode.");
-            c.set("mode", "replace");
-        }
         if (c.getString("shortener").equals("bitly")
                 && (c.getString("bitlyUSER").equals("none") || c.getString(
                 "bitlyAPI").equals("none"))) {
@@ -183,7 +117,6 @@ public class ShortifyUtility {
         CommonConfiguration c = new CommonConfiguration();
         c.addDefault("mode", "replace");
         c.addDefault("shortener", "isgd");
-        c.addDefault("auto-update", "true");
         c.addDefault("prefix", "&n");
         c.addDefault("minlength", "20");
         c.addDefault("googAPI", "none");

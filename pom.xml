@@ -8,6 +8,7 @@
         <module>common</module>
         <module>bukkit</module>
         <module>bungee</module>
+      <module>universal</module>
     </modules>
     <name>Shortify</name>
   <build>
