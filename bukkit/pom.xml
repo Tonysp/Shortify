@@ -27,17 +27,12 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.mcstats.bukkit:metrics</include>
-                                    <include>com.google.code.gson:gson</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>org.mcstats</pattern>
                                     <shadedPattern>com.nullblock.vemacs.shortify.bukkit.metrics</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>com.google.gson</pattern>
-                                    <shadedPattern>com.nullblock.vemacs.shortify.bukkit.gson</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

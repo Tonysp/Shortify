@@ -1,6 +1,6 @@
 name: Shortify
-author: vemacs
-main: Shortify
+author: tuxed
+main: io.minimum.minecraft.shortify.bukkit.Shortify
 version: 1.7
 commands:
   shortify:

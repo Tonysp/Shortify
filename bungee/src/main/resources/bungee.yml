@@ -1,4 +1,4 @@
 name: Shortify
 author: vemacs
-main: Shortify
+main: io.minimum.minecraft.shortify.bungee.Shortify
 version: 1.7
